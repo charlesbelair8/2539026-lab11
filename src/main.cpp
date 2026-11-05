@@ -80,7 +80,6 @@ for (int i = 0; i < NUM_LEDS; i++)
   digitalWrite(LED_PINS[i], LOW);    // turn it off again
 }
 
-
   // Part IV – Wait for the button, then measure (while loops)
 
 
