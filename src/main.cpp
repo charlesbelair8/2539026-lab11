@@ -30,6 +30,22 @@ const int STEP_TIME = 200;   // how long each LED stays on (ms)
 
 // ----- Helper functions ----------------------------------------------
 // Part III – showLevel()
+// showLevel() – a bar graph: turn on LEDs 0 to level-1, and turn the others off.
+// Example: level = 2  ->  LED 0 and LED 1 on, LED 2 and LED 3 off.
+void showLevel(int level)
+{
+  for (int i = 0; i < NUM_LEDS; i++)
+  {
+    if (i < level)                  // should LED i be part of the bar?
+    {
+      digitalWrite(LED_PINS[i], HIGH);
+    }
+    else
+    {
+      digitalWrite(LED_PINS[i], LOW);
+    }
+  }
+}
 
 
 // Part IV – takeSamples(), printSamples(), getAverage(),
@@ -68,17 +84,33 @@ void setup()
 void loop()
 {
   // Part III – LED patterns (for loops)
-// Visit each LED from the first (index 0) to the last, one after the other.
-for (int i = 0; i < NUM_LEDS; i++)
-{
-  digitalWrite(LED_PINS[i], HIGH);   // turn LED number i on
-  Serial.print("LED ");
-  Serial.print(i);
-  Serial.print(" is on GPIO ");
-  Serial.println(LED_PINS[i]);      // print the pin number stored at index i
-  delay(STEP_TIME);
-  digitalWrite(LED_PINS[i], LOW);    // turn it off again
-}
+  // Visit each LED from the first (index 0) to the last, one after the other.
+  for (int i = 0; i < NUM_LEDS; i++)
+  {
+    digitalWrite(LED_PINS[i], HIGH);   // turn LED number i on
+    Serial.print("LED ");
+    Serial.print(i);
+    Serial.print(" is on GPIO ");
+    Serial.println(LED_PINS[i]);      // print the pin number stored at index i
+    delay(STEP_TIME);
+    digitalWrite(LED_PINS[i], LOW);    // turn it off again
+  }
+
+    // Visit each LED from the last to the first: start at the LAST index and count DOWN
+    // (Common Commands: "Count Down"). What is the index of the last element?
+    for (int i = NUM_LEDS - 1; i >= 0; i--)
+    {
+      digitalWrite(LED_PINS[i], HIGH);
+      delay(STEP_TIME);
+      digitalWrite(LED_PINS[i], LOW);
+    }
+
+      // Show the levels 0, 1, 2, 3 and 4, half a second each.
+      for (int level = 0; level <= NUM_LEDS; level++)
+      {
+        showLevel(level);
+        delay(500);
+      }
 
   // Part IV – Wait for the button, then measure (while loops)
 
