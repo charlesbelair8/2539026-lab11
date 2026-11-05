@@ -107,18 +107,12 @@ int getMaximum()
   int largest = samples[0];
   for (int i = 1; i < NUM_SAMPLES; i++)
   {
-    if (samples[i] > largest)       // < or > ?
+    if (samples[i] > largest)
     {
       largest = samples[i];
     }
-  return largest;
   }
-  // Write this function yourself. It works like getMinimum():
-  // 1. Create an int variable called largest and give it the value of samples[0].
-  // 2. Write a for loop that starts at i = 1 and visits every other element.
-  // 3. Inside the loop: if samples[i] is greater than largest,
-  //    copy samples[i] into largest.
-  // 4. After the loop, return largest.
+  return largest;
 }
 
 
@@ -126,6 +120,26 @@ int getMaximum()
 
 
 // Part IV – runMeasurement()
+// runMeasurement() – take the readings, calculate, show the bar graph and print.
+  void runMeasurement()
+  {
+    takeSamples();
+
+    float average = getAverage();
+    int minimum = getMinimum();
+    int maximum = getMaximum();
+
+    // Turn the average (0 to 4095) into a level from 0 to 4 LEDs
+    // (Common Commands: "Change the Range").
+    int level = map((int)average, 0, 4096, 0, NUM_LEDS + 1);
+    showLevel(level);                 // show the level on the bar graph
+
+    printSamples();
+    Serial.print("Average: ");   Serial.println(average);
+    Serial.print("Minimum: ");   Serial.println(minimum);
+    Serial.print("Maximum: ");   Serial.println(maximum);
+    Serial.print("Level: ");     Serial.println(level);
+  }
 
 
 // Part V – handleCommand() and checkSerial()
@@ -184,7 +198,9 @@ void loop()
       }
 
   // Part IV – Wait for the button, then measure (while loops)
-Serial.println("Press the button to measure...");
+  // Serial.println("Press the button to measure...");
+  Serial.println("Press the button to measure...");
+
 
 // A while loop repeats AS LONG AS its condition is true
 // (Common Commands: "While Loop").
@@ -195,7 +211,9 @@ Serial.println("Press the button to measure...");
   }
   delay(50);     // ignore switch bounce (like the debounce in Lab 10)
 
-  Serial.println("Button pressed!");
+runMeasurement();   // take the readings, calculate, show the bar graph and print
+
+getMaximum(); 
 
   // Now wait here until the button is released, so one press = one measurement.
   while (digitalRead(BUTTON_PIN) == LOW)
